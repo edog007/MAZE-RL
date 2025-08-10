@@ -108,14 +108,21 @@ def set_blocks():
 
     keys = pygame.key.get_pressed()
     mx, my = pygame.mouse.get_pos()
+    clicked_x = int(mx/BLOCK_WIDTH)
+    clicked_y = int(my/BLOCK_HEIGHT)
     mouse_buttons = pygame.mouse.get_pressed()
-    if mouse_buttons[0]:
-        blocks[int((mx)/BLOCK_WIDTH), int((my)/BLOCK_HEIGHT)] = 0
+
+    # left click
+    if mouse_buttons[0] and not keys[pygame.K_BACKSPACE]:
+        blocks[clicked_x, clicked_y] = 0
+    # left click + BACKSPACE
     if mouse_buttons[0] and keys[pygame.K_BACKSPACE]:
-        blocks[int((mx)/BLOCK_WIDTH), int((my)/BLOCK_HEIGHT)] = 1
+        if 0 < clicked_x < BLOCKS_X - 1 and 0 < clicked_y < BLOCKS_Y - 1:
+            blocks[clicked_x, clicked_y] = 1
+    # right click
     if mouse_buttons[2]:
-        GOAL_X = int(mx/BLOCK_WIDTH)
-        GOAL_Y = int(my/BLOCK_HEIGHT)
+        GOAL_X = clicked_x
+        GOAL_Y = clicked_y
         states[GOAL_X, GOAL_Y] = 1
 
 
